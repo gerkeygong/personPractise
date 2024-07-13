@@ -15,7 +15,6 @@ console.log(newSlice(1, 3))
 function fn(a, b, c, d) {
     console.log(a, b, c, d)
     console.log(this)
-    return 123
 }
 // const newFn = fn.bind('ctx', 1, 2)
 // newFn(3, 4)
@@ -35,34 +34,21 @@ Function.prototype.myBind = function (ctx) {
         // 思路5: 获取到所有参数 -> 数组
         // 思路6: 将原本函数fn this指向使用apply 换成ctx （this指向替换）并传入所有参数
         // 思路7:return 就是返回fn 返回的结果（fn的this指向已经改变，参数也改变了）
-        if (是new的方式调用) {
+        if (Object.getPrototypeOf(this) === A.prototype) {
             const obj = {}
             Object.setPrototypeOf(obj, selffn.prototype)
             fn.apply(obj, allArgus)
             return obj;
         } else {
-            return selffn.apply(ctx, allArgus)
+            selffn.apply(ctx, allArgus)
         }
-
     }
     // 原本函数.apply(ctx)
 }
 const newFn = fn.myBind('ctx', 1, 2)
-let result = newFn(3, 4)
-console.log(result)
+newFn(3, 4)
 
 // 假如是new 调用newFn
 const result2 = new newFn(4, 5)
+console.log(result2)
 
-function Person() {
-    this.name = name;
-    this.sayHello = function () {
-        console.log(`Hello, my name is ${this.name}`);
-    };
-}
-function _new(Constructor, ...args) {
-    let obj = {}
-    Object.setPrototypeOf(obj, Constructor.prototype)
-    const result = Constructor.apply(obj, ...args)
-
-}
